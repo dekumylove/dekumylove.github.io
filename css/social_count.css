@@ -6,8 +6,9 @@
 }
 
 .social-count {
-    font-size: 10px;
-    transform: translateY(-2px);
+    width: 30px;
+    font-size: 15px;
+    transform: translateY(-5px);
     color: #25292e;
     background-color: #fff;
     border-color: #d1d9e0;
