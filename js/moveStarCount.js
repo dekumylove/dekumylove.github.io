@@ -1,12 +1,12 @@
 // 获取class为index-ctas的元素下的第一个span子元素
-const firstSpan = document.querySelector('.index-ctas span');
+const fs = document.querySelector('.index-ctas span');
 
 // 检查 firstSpan 是否存在
-if (!firstSpan) {
+if (!fs) {
   console.error('未找到 class 为 index-ctas 的元素下的第一个 span 子元素');
 } else {
   // 获取 firstSpan 的 Shadow DOM
-  const shadowRoot = firstSpan.shadowRoot;
+  const shadowRoot = fs.shadowRoot;
   if (!shadowRoot) {
     console.error('firstSpan 没有 Shadow DOM');
   } else {
