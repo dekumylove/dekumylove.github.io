@@ -1,5 +1,6 @@
 import { defineConfig } from 'astro/config';
 import preact from '@astrojs/preact';
+import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
@@ -24,7 +25,15 @@ export default defineConfig({
       ],
     },
   },
-  integrations: [preact({ compat: false })],
+  integrations: [
+    preact({ compat: false }),
+    sitemap({
+      i18n: {
+        defaultLocale: 'zh',
+        locales: { zh: 'zh-CN', en: 'en-US' },
+      },
+    }),
+  ],
   vite: {
     plugins: [tailwindcss()],
   },

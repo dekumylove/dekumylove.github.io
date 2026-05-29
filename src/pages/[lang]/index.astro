@@ -95,4 +95,20 @@ const modules = [
       ))}
     </div>
   </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    'name': profile.name_en,
+    'alternateName': profile.name_zh,
+    'url': Astro.site?.href ?? '',
+    'description': profile.title_en,
+    'knowsAbout': ['Computer Science', 'Machine Learning', 'Natural Language Processing'],
+    'sameAs': [
+      profile.social.github ? `https://github.com/${profile.social.github}` : '',
+      profile.social.scholar,
+      profile.social.linkedin ? `https://linkedin.com/in/${profile.social.linkedin}` : '',
+      profile.social.twitter ? `https://twitter.com/${profile.social.twitter}` : '',
+    ].filter(Boolean),
+  })} />
 </PageLayout>
