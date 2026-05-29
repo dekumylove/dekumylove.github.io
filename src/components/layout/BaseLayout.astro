@@ -4,6 +4,7 @@ import '../../styles/academic.css';
 import '../../styles/blog.css';
 import '../../styles/experience.css';
 import '../../styles/activities.css';
+import { getProfile } from '../../lib/profile';
 
 interface Props {
   title?: string;
@@ -12,8 +13,10 @@ interface Props {
 }
 
 const { title, description, locale } = Astro.props;
-const siteTitle = locale === 'en' ? 'Hao Wang' : '王浩';
-const fullTitle = title ? `${title} — ${siteTitle}` : siteTitle;
+const profile = getProfile();
+const siteTitle = locale === 'en' ? profile.name_en : profile.name_zh;
+const siteDesc = locale === 'en' ? profile.title_en : profile.title_zh;
+const fullTitle = title ? `${title} — ${siteTitle}` : `${siteTitle} — ${siteDesc}`;
 ---
 
 <!DOCTYPE html>
@@ -22,9 +25,9 @@ const fullTitle = title ? `${title} — ${siteTitle}` : siteTitle;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{fullTitle}</title>
-    <meta name="description" content={description || (locale === 'en' ? 'Personal homepage of Hao Wang — researcher, engineer, and life explorer.' : '王浩的个人主页 — 研究员、工程师、生活探索者。')} />
+    <meta name="description" content={description || `${siteTitle} — ${siteDesc}`} />
     <meta property="og:title" content={fullTitle} />
-    <meta property="og:description" content={description || (locale === 'en' ? 'Personal homepage of Hao Wang' : '王浩的个人主页')} />
+    <meta property="og:description" content={description || `${siteTitle} — ${siteDesc}`} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={Astro.url.href} />
     <link rel="canonical" href={Astro.url.href} />

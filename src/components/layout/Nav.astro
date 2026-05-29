@@ -2,9 +2,11 @@
 import LanguageSwitch from '../shared/LanguageSwitch.astro';
 import DarkModeToggle from '../shared/DarkModeToggle.astro';
 import { useTranslations } from '../../lib/i18n';
+import { getProfile } from '../../lib/profile';
 
 const locale = Astro.url.pathname.startsWith('/en/') ? 'en' : 'zh';
 const t = useTranslations(locale);
+const profile = getProfile();
 const altLang = locale === 'zh' ? 'en' : 'zh';
 
 const navItems = [
@@ -19,7 +21,7 @@ const navItems = [
 <nav class="sticky top-0 z-50 backdrop-blur-md bg-white/80 dark:bg-gray-950/80 border-b border-gray-200 dark:border-gray-800">
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
     <a href={`/${locale}/`} class="text-lg font-bold text-gray-900 dark:text-white hover:opacity-70 transition-opacity">
-      {locale === 'en' ? 'Hao Wang' : '王浩'}
+      {locale === 'en' ? profile.name_en : profile.name_zh}
     </a>
 
     <div class="hidden md:flex items-center gap-6">

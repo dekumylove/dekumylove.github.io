@@ -1,6 +1,7 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
 import { useTranslations } from '../../lib/i18n';
+import { getProfile } from '../../lib/profile';
 
 export function getStaticPaths() {
   return [
@@ -11,6 +12,9 @@ export function getStaticPaths() {
 
 const locale = Astro.currentLocale ?? 'zh';
 const t = useTranslations(locale);
+const profile = getProfile();
+const siteName = locale === 'en' ? profile.name_en : profile.name_zh;
+const siteTitle = locale === 'en' ? profile.title_en : profile.title_zh;
 
 const modules = [
   {
@@ -40,16 +44,16 @@ const modules = [
 ];
 ---
 
-<PageLayout title={t('site.title')} description={t('site.subtitle')}>
+<PageLayout title={siteName} description={siteTitle}>
   <!-- Hero -->
   <section class="relative overflow-hidden">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32 lg:py-40">
       <div class="text-center max-w-3xl mx-auto">
         <h1 class="fade-in text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 dark:text-white">
-          {t('home.hero.greeting', { name: t('site.title') })}
+          {t('home.hero.greeting', { name: siteName })}
         </h1>
         <p class="fade-in mt-6 text-xl text-gray-500 dark:text-gray-400 leading-relaxed">
-          {t('home.hero.tagline')}
+          {siteTitle}
         </p>
         <div class="fade-in mt-10">
           <a

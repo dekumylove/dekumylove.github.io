@@ -1,15 +1,17 @@
 ---
 import { useTranslations } from '../../lib/i18n';
+import { getProfile } from '../../lib/profile';
 
 const locale = Astro.url.pathname.startsWith('/en/') ? 'en' : 'zh';
 const t = useTranslations(locale);
+const profile = getProfile();
 const year = new Date().getFullYear();
 ---
 
 <footer class="border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950 py-12 mt-24">
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
     <p class="text-sm text-gray-500 dark:text-gray-500">
-      {t('footer.copyright', { year: String(year) })}
+      © {year} {locale === 'en' ? profile.name_en : profile.name_zh}
     </p>
   </div>
 </footer>
