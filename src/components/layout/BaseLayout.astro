@@ -1,0 +1,63 @@
+---
+import '../../styles/global.css';
+import '../../styles/academic.css';
+import '../../styles/blog.css';
+import '../../styles/experience.css';
+import '../../styles/activities.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  locale: string;
+}
+
+const { title, description, locale } = Astro.props;
+const siteTitle = locale === 'en' ? 'Hao Wang' : '王浩';
+const fullTitle = title ? `${title} — ${siteTitle}` : siteTitle;
+---
+
+<!DOCTYPE html>
+<html lang={locale === 'en' ? 'en' : 'zh-CN'}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description || (locale === 'en' ? 'Personal homepage of Hao Wang — researcher, engineer, and life explorer.' : '王浩的个人主页 — 研究员、工程师、生活探索者。')} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description || (locale === 'en' ? 'Personal homepage of Hao Wang' : '王浩的个人主页')} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url.href} />
+    <link rel="canonical" href={Astro.url.href} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <slot />
+    <script>
+      // Dark mode init before paint
+      const theme = localStorage.getItem('theme');
+      if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      }
+    </script>
+    <script>
+      // Scroll-triggered fade-in animations
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+      document.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
+    </script>
+  </body>
+</html>

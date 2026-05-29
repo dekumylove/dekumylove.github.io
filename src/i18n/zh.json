@@ -1,0 +1,99 @@
+{
+  "site": {
+    "title": "王浩",
+    "subtitle": "研究员 | 工程师 | 生活探索者"
+  },
+  "nav": {
+    "home": "首页",
+    "academic": "学术成果",
+    "blog": "博客",
+    "experience": "个人经历",
+    "activities": "活动推荐",
+    "language": "English"
+  },
+  "home": {
+    "hero": {
+      "greeting": "你好，我是{name}",
+      "tagline": "创造有意义的事物",
+      "cta": "了解更多"
+    },
+    "modules": {
+      "academic": {
+        "title": "学术成果",
+        "desc": "研究论文与学术发表"
+      },
+      "blog": {
+        "title": "博客",
+        "desc": "技术思考与生活记录"
+      },
+      "experience": {
+        "title": "个人经历",
+        "desc": "教育、工作与项目"
+      },
+      "activities": {
+        "title": "活动推荐",
+        "desc": "发现有趣的情侣活动"
+      }
+    }
+  },
+  "academic": {
+    "title": "学术成果",
+    "totalPapers": "共 {count} 篇论文",
+    "filterYear": "按年份筛选",
+    "allYears": "全部年份",
+    "sortBy": "排序",
+    "sortCitations": "按引用量",
+    "sortYear": "按年份",
+    "citations": "{count} 次引用",
+    "venue": "发表于 {venue}",
+    "noPapers": "没有匹配的论文。"
+  },
+  "blog": {
+    "title": "博客",
+    "readMore": "阅读全文",
+    "postedOn": "发布于 {date}",
+    "tags": "标签",
+    "noPosts": "还没有文章，敬请期待。",
+    "minRead": "{min} 分钟阅读"
+  },
+  "experience": {
+    "title": "个人经历",
+    "education": "教育经历",
+    "work": "工作经历",
+    "projects": "项目作品",
+    "present": "至今"
+  },
+  "activities": {
+    "title": "情侣活动推荐",
+    "selectCity": "选择城市",
+    "searchCity": "搜索城市...",
+    "allCategories": "全部",
+    "categories": {
+      "outdoor": "户外运动",
+      "crafts": "手工体验",
+      "performances": "演出展览",
+      "food": "美食探店",
+      "travel": "短途旅行",
+      "entertainment": "休闲娱乐"
+    },
+    "bookmark": {
+      "wantToGo": "想去",
+      "beenThere": "去过",
+      "remove": "取消收藏"
+    },
+    "price": {
+      "free": "免费",
+      "range": "{min} - {max} 元",
+      "from": "{min} 元起"
+    },
+    "source": "来源",
+    "noActivities": "该城市暂无推荐活动，试试其他城市或类别。",
+    "loading": "正在寻找有趣的活动...",
+    "error": "加载失败，请稍后重试。",
+    "retry": "重试"
+  },
+  "footer": {
+    "copyright": "© {year} 王浩。使用 Astro 构建。",
+    "social": "社交链接"
+  }
+}

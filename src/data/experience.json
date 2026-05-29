@@ -1,0 +1,37 @@
+{
+  "education": [
+    {
+      "institution": "Tsinghua University",
+      "institution_zh": "清华大学",
+      "degree": "Ph.D. in Computer Science",
+      "degree_zh": "计算机科学博士",
+      "start_date": "2020-09",
+      "end_date": null,
+      "description": "Research focus on machine learning and natural language processing.",
+      "description_zh": "研究方向为机器学习与自然语言处理。"
+    }
+  ],
+  "work": [
+    {
+      "company": "Example Corp",
+      "company_zh": "示例公司",
+      "role": "Research Scientist",
+      "role_zh": "研究科学家",
+      "start_date": "2023-07",
+      "end_date": null,
+      "description": "Working on large language models.",
+      "description_zh": "从事大语言模型相关研究。"
+    }
+  ],
+  "projects": [
+    {
+      "name": "Activity Recommendation System",
+      "name_zh": "活动推荐系统",
+      "description": "A smart activity recommendation engine for couples, featuring multi-source data aggregation and personalized suggestions.",
+      "description_zh": "智能情侣活动推荐引擎，支持多源数据聚合与个性化建议。",
+      "tags": ["Astro", "TypeScript", "Preact", "Tailwind CSS"],
+      "url": "https://github.com/hao-wang/activity-recommendation",
+      "image": ""
+    }
+  ]
+}

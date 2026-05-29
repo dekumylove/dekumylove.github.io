@@ -1,0 +1,59 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import SectionTitle from '../../components/shared/SectionTitle.astro';
+import ActivityApp from '../../islands/ActivityApp.tsx';
+import { useTranslations } from '../../lib/i18n';
+import type { CityConfig } from '../../lib/activities';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'zh' } },
+    { params: { lang: 'en' } },
+  ];
+}
+
+const locale = Astro.currentLocale ?? 'zh';
+const t = useTranslations(locale);
+
+const cities: CityConfig[] = [
+  { id: 'beijing', name_zh: '北京', name_en: 'Beijing', lat: 39.9042, lng: 116.4074 },
+];
+
+let activities: import('../../lib/activities').Activity[] = [];
+try {
+  const data = await import('../../data/activities.json');
+  activities = data.default as import('../../lib/activities').Activity[];
+} catch {
+  // activities.json may not exist or be empty
+}
+---
+
+<PageLayout title={t('activities.title')}>
+  <div class="activities-module">
+    <ActivityApp
+      client:load
+      activities={activities}
+      cities={cities}
+      initialCity="beijing"
+      translations={{
+        searchCity: t('activities.searchCity'),
+        allCategories: t('activities.allCategories'),
+        outdoor: t('activities.categories.outdoor'),
+        crafts: t('activities.categories.crafts'),
+        performances: t('activities.categories.performances'),
+        food: t('activities.categories.food'),
+        travel: t('activities.categories.travel'),
+        entertainment: t('activities.categories.entertainment'),
+        wantToGo: t('activities.bookmark.wantToGo'),
+        beenThere: t('activities.bookmark.beenThere'),
+        remove: t('activities.bookmark.remove'),
+        noActivities: t('activities.noActivities'),
+        loading: t('activities.loading'),
+        error: t('activities.error'),
+        retry: t('activities.retry'),
+        source: t('activities.source'),
+      }}
+      locale={locale}
+    />
+  </div>
+</PageLayout>

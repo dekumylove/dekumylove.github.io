@@ -1,0 +1,36 @@
+---
+interface Props {
+  title: string;
+  subtitle: string;
+  startDate: string;
+  endDate: string | null;
+  description: string;
+  presentLabel: string;
+  locale: string;
+}
+
+const { title, subtitle, startDate, endDate, description, presentLabel, locale } = Astro.props;
+
+function fmtDate(d: string, l: string): string {
+  const [y, m] = d.split('-');
+  const date = new Date(Number(y), Number(m) - 1);
+  return date.toLocaleDateString(l === 'zh' ? 'zh-CN' : 'en-US', {
+    year: 'numeric',
+    month: 'short',
+  });
+}
+---
+
+<div class="relative pb-10 last:pb-0">
+  <div class="timeline-dot"></div>
+  <div class="ml-6">
+    <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-2">
+      <h3 class="text-lg font-bold text-gray-900 dark:text-white">{title}</h3>
+      <span class="text-sm text-gray-500 dark:text-gray-400 font-mono">
+        {fmtDate(startDate, locale)} — {endDate ? fmtDate(endDate, locale) : presentLabel}
+      </span>
+    </div>
+    <p class="text-sm font-medium text-indigo-600 dark:text-indigo-400 mb-2">{subtitle}</p>
+    <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{description}</p>
+  </div>
+</div>

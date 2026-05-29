@@ -1,0 +1,24 @@
+---
+import TechTag from './TechTag.astro';
+
+interface Props {
+  name: string;
+  description: string;
+  tags: string[];
+  url: string;
+  image?: string;
+}
+
+const { name, description, tags, url, image } = Astro.props;
+---
+
+<a href={url} target="_blank" rel="noopener noreferrer" class="project-card block p-6">
+  {image && (
+    <img src={image} alt={name} class="w-full h-40 object-cover rounded-lg mb-4" />
+  )}
+  <h4 class="text-lg font-bold text-gray-900 dark:text-white">{name}</h4>
+  <p class="mt-2 text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{description}</p>
+  <div class="mt-4 flex flex-wrap gap-2">
+    {tags.map((tag) => <TechTag name={tag} />)}
+  </div>
+</a>

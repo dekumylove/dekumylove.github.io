@@ -1,0 +1,79 @@
+backend:
+  name: github
+  repo: dekumylove/dekumylove.github.io
+  branch: main
+  base_url: https://api.netlify.com
+
+publish_mode: editorial_workflow
+
+media_folder: public/images/blog
+public_folder: /images/blog
+
+collections:
+  - name: blog_zh
+    label: "博客 (中文)"
+    label_singular: "文章"
+    folder: src/content/blog/zh
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    sortable_fields: [date, title]
+    view_filters:
+      - label: "已发布"
+        field: draft
+        pattern: false
+    fields:
+      - label: "标题"
+        name: title
+        widget: string
+      - label: "发布日期"
+        name: date
+        widget: datetime
+        format: "YYYY-MM-DD"
+      - label: "标签"
+        name: tags
+        widget: list
+        default: []
+      - label: "草稿"
+        name: draft
+        widget: boolean
+        default: false
+        required: false
+      - { label: "语言", name: lang, widget: hidden, default: "zh" }
+      - label: "正文"
+        name: body
+        widget: markdown
+
+  - name: blog_en
+    label: "Blog (English)"
+    label_singular: "Post"
+    folder: src/content/blog/en
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    sortable_fields: [date, title]
+    view_filters:
+      - label: "Published"
+        field: draft
+        pattern: false
+    fields:
+      - label: "Title"
+        name: title
+        widget: string
+      - label: "Date"
+        name: date
+        widget: datetime
+        format: "YYYY-MM-DD"
+      - label: "Tags"
+        name: tags
+        widget: list
+        default: []
+      - label: "Draft"
+        name: draft
+        widget: boolean
+        default: false
+        required: false
+      - { label: "Language", name: lang, widget: hidden, default: "en" }
+      - label: "Body"
+        name: body
+        widget: markdown

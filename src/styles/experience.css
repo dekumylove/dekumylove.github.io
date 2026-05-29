@@ -1,0 +1,45 @@
+@layer components {
+  .experience-module {
+    font-family: var(--font-sans);
+  }
+
+  .experience-module .timeline-line {
+    position: absolute;
+    left: 1rem;
+    top: 0;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(to bottom, #6366f1, #a855f7, #ec4899);
+  }
+
+  .experience-module .timeline-dot {
+    position: absolute;
+    left: 0.875rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 9999px;
+    background-color: #6366f1;
+    box-shadow: 0 0 0 4px white;
+    transform: translateX(-50%);
+  }
+
+  .dark .experience-module .timeline-dot {
+    box-shadow: 0 0 0 4px #111827;
+  }
+
+  .experience-module .project-card {
+    border-radius: 1rem;
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .dark .experience-module .project-card {
+    border-color: #1f2937;
+  }
+
+  .experience-module .project-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.15);
+  }
+}

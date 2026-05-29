@@ -1,0 +1,16 @@
+@layer components {
+  .academic-module {
+    --paper-bg: 255 255 255;
+    --paper-border: 229 231 235;
+    --citation-color: 59 130 246;
+    font-family: var(--font-serif);
+    max-width: 72ch;
+    line-height: 1.8;
+  }
+
+  .dark .academic-module {
+    --paper-bg: 30 41 59;
+    --paper-border: 51 65 85;
+    --citation-color: 96 165 250;
+  }
+}

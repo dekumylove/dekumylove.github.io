@@ -1,0 +1,33 @@
+@layer components {
+  .activities-module {
+    --accent: #f97316;
+    --accent-light: #fff7ed;
+    --card-radius: 1rem;
+    --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    font-family: var(--font-sans);
+  }
+
+  .activities-module .bg-module {
+    background: linear-gradient(180deg, #fefce8 0%, #fff7ed 50%, #ffffff 100%);
+  }
+
+  .dark .activities-module .bg-module {
+    background: linear-gradient(180deg, #1a1a0a 0%, #1a120a 50%, #111111 100%);
+  }
+
+  .activities-module .card {
+    border-radius: var(--card-radius);
+    box-shadow: var(--card-shadow);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .activities-module .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.12);
+  }
+
+  .dark .activities-module {
+    --accent: #fb923c;
+    --accent-light: #431407;
+  }
+}

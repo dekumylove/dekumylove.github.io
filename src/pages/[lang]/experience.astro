@@ -1,0 +1,120 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import SectionTitle from '../../components/shared/SectionTitle.astro';
+import Timeline from '../../components/experience/Timeline.astro';
+import TimelineItem from '../../components/experience/TimelineItem.astro';
+import ProjectGrid from '../../components/experience/ProjectGrid.astro';
+import ProjectCard from '../../components/experience/ProjectCard.astro';
+import { useTranslations } from '../../lib/i18n';
+import expData from '../../data/experience.json';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'zh' } },
+    { params: { lang: 'en' } },
+  ];
+}
+
+const locale = Astro.currentLocale ?? 'zh';
+const t = useTranslations(locale);
+const isZh = locale === 'zh';
+
+interface EntryItem {
+  institution?: string;
+  institution_zh?: string;
+  company?: string;
+  company_zh?: string;
+  degree?: string;
+  degree_zh?: string;
+  role?: string;
+  role_zh?: string;
+  start_date: string;
+  end_date: string | null;
+  description: string;
+  description_zh?: string;
+}
+
+interface ProjectItem {
+  name: string;
+  name_zh?: string;
+  description: string;
+  description_zh?: string;
+  tags: string[];
+  url: string;
+  image?: string;
+}
+
+function locStr(item: EntryItem | ProjectItem, field: string): string {
+  if (isZh && (item as Record<string, string | undefined>)[`${field}_zh`]) {
+    return (item as Record<string, string | undefined>)[`${field}_zh`]!;
+  }
+  return (item as Record<string, string>)[field] ?? '';
+}
+---
+
+<PageLayout title={t('experience.title')}>
+  <div class="experience-module max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+
+    <!-- Education -->
+    {expData.education.length > 0 && (
+      <section class="mb-16">
+        <SectionTitle title={t('experience.education')} />
+        <Timeline>
+          {expData.education.map((item: EntryItem) => (
+            <TimelineItem
+              title={locStr(item, 'institution')}
+              subtitle={locStr(item, 'degree')}
+              startDate={item.start_date}
+              endDate={item.end_date}
+              description={locStr(item, 'description')}
+              presentLabel={t('experience.present')}
+              locale={locale}
+            />
+          ))}
+        </Timeline>
+      </section>
+    )}
+
+    <!-- Work -->
+    {expData.work.length > 0 && (
+      <section class="mb-16">
+        <SectionTitle title={t('experience.work')} />
+        <Timeline>
+          {expData.work.map((item: EntryItem) => (
+            <TimelineItem
+              title={locStr(item, 'company')}
+              subtitle={locStr(item, 'role')}
+              startDate={item.start_date}
+              endDate={item.end_date}
+              description={locStr(item, 'description')}
+              presentLabel={t('experience.present')}
+              locale={locale}
+            />
+          ))}
+        </Timeline>
+      </section>
+    )}
+
+    <!-- Projects -->
+    {expData.projects.length > 0 && (
+      <section>
+        <SectionTitle title={t('experience.projects')} />
+        <ProjectGrid>
+          {expData.projects.map((item: ProjectItem) => (
+            <ProjectCard
+              name={locStr(item, 'name')}
+              description={locStr(item, 'description')}
+              tags={item.tags}
+              url={item.url}
+              image={item.image || undefined}
+            />
+          ))}
+        </ProjectGrid>
+      </section>
+    )}
+
+    {expData.education.length === 0 && expData.work.length === 0 && expData.projects.length === 0 && (
+      <p class="text-center text-gray-500 dark:text-gray-400 py-12">Coming soon...</p>
+    )}
+  </div>
+</PageLayout>

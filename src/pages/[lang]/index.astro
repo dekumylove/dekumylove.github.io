@@ -1,0 +1,94 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import { useTranslations } from '../../lib/i18n';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'zh' } },
+    { params: { lang: 'en' } },
+  ];
+}
+
+const locale = Astro.currentLocale ?? 'zh';
+const t = useTranslations(locale);
+
+const modules = [
+  {
+    key: 'academic',
+    href: `/${locale}/academic/`,
+    icon: '📄',
+    gradient: 'from-blue-50 to-indigo-50 dark:from-blue-950 dark:to-indigo-950',
+  },
+  {
+    key: 'blog',
+    href: `/${locale}/blog/`,
+    icon: '✍️',
+    gradient: 'from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950',
+  },
+  {
+    key: 'experience',
+    href: `/${locale}/experience/`,
+    icon: '💼',
+    gradient: 'from-purple-50 to-pink-50 dark:from-purple-950 dark:to-pink-950',
+  },
+  {
+    key: 'activities',
+    href: `/${locale}/activities/`,
+    icon: '💝',
+    gradient: 'from-orange-50 to-rose-50 dark:from-orange-950 dark:to-rose-950',
+  },
+];
+---
+
+<PageLayout title={t('site.title')} description={t('site.subtitle')}>
+  <!-- Hero -->
+  <section class="relative overflow-hidden">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32 lg:py-40">
+      <div class="text-center max-w-3xl mx-auto">
+        <h1 class="fade-in text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 dark:text-white">
+          {t('home.hero.greeting', { name: t('site.title') })}
+        </h1>
+        <p class="fade-in mt-6 text-xl text-gray-500 dark:text-gray-400 leading-relaxed">
+          {t('home.hero.tagline')}
+        </p>
+        <div class="fade-in mt-10">
+          <a
+            href="#modules"
+            class="inline-flex items-center px-6 py-3 rounded-full bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-medium hover:opacity-80 transition-opacity"
+          >
+            {t('home.hero.cta')}
+            <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Decorative background -->
+    <div class="absolute inset-0 -z-10 overflow-hidden">
+      <div class="absolute -top-40 -right-40 w-80 h-80 rounded-full bg-blue-100 dark:bg-blue-900/20 blur-3xl opacity-50" />
+      <div class="absolute -bottom-40 -left-40 w-80 h-80 rounded-full bg-orange-100 dark:bg-orange-900/20 blur-3xl opacity-50" />
+    </div>
+  </section>
+
+  <!-- Module Previews -->
+  <section id="modules" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <div class="grid sm:grid-cols-2 gap-6">
+      {modules.map((mod) => (
+        <a
+          href={mod.href}
+          class={`fade-in group block p-8 rounded-3xl bg-gradient-to-br ${mod.gradient} border border-gray-200/50 dark:border-gray-800/50 hover:shadow-lg transition-all duration-300`}
+        >
+          <span class="text-4xl">{mod.icon}</span>
+          <h3 class="mt-4 text-xl font-bold text-gray-900 dark:text-white group-hover:translate-x-1 transition-transform">
+            {t(`home.modules.${mod.key}.title`)}
+          </h3>
+          <p class="mt-2 text-gray-500 dark:text-gray-400 leading-relaxed">
+            {t(`home.modules.${mod.key}.desc`)}
+          </p>
+        </a>
+      ))}
+    </div>
+  </section>
+</PageLayout>

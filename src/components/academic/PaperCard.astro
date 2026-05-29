@@ -1,0 +1,54 @@
+---
+import CitationBadge from './CitationBadge.astro';
+import type { Paper } from '../../lib/academic';
+
+interface Props {
+  paper: Paper;
+  locale: string;
+}
+
+const { paper, locale } = Astro.props;
+const authors =
+  paper.authors.length > 0
+    ? paper.authors.map((a) => a.name).join(', ')
+    : 'Unknown';
+const isEn = locale === 'en';
+---
+
+<article
+  class="paper-item border-b border-gray-200 dark:border-gray-700 py-6 last:border-b-0"
+  data-year={String(paper.year ?? '')}
+  data-citations={String(paper.citationCount)}
+>
+  <div class="flex items-start justify-between gap-4">
+    <div class="flex-1 min-w-0">
+      <a
+        href={paper.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-lg font-semibold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+      >
+        {paper.title}
+      </a>
+      <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+        {authors}
+      </p>
+      <div class="mt-2 flex flex-wrap items-center gap-3 text-xs text-gray-500 dark:text-gray-500">
+        {paper.year && <span>{paper.year}</span>}
+        {paper.venue && (
+          <>
+            <span aria-hidden="true">|</span>
+            <span>{paper.venue}</span>
+          </>
+        )}
+        {paper.externalIds.DOI && (
+          <>
+            <span aria-hidden="true">|</span>
+            <span class="font-mono text-[10px]">DOI: {paper.externalIds.DOI}</span>
+          </>
+        )}
+      </div>
+    </div>
+    <CitationBadge count={paper.citationCount} locale={locale} />
+  </div>
+</article>

@@ -1,0 +1,99 @@
+{
+  "site": {
+    "title": "Hao Wang",
+    "subtitle": "Researcher | Engineer | Life Explorer"
+  },
+  "nav": {
+    "home": "Home",
+    "academic": "Academic",
+    "blog": "Blog",
+    "experience": "Experience",
+    "activities": "Activities",
+    "language": "中文"
+  },
+  "home": {
+    "hero": {
+      "greeting": "Hi, I'm {name}",
+      "tagline": "Building things that matter",
+      "cta": "Explore my work"
+    },
+    "modules": {
+      "academic": {
+        "title": "Academic Achievements",
+        "desc": "Research papers and publications"
+      },
+      "blog": {
+        "title": "Blog",
+        "desc": "Thoughts and technical writing"
+      },
+      "experience": {
+        "title": "Experience",
+        "desc": "Education, work, and projects"
+      },
+      "activities": {
+        "title": "Couple's Activities",
+        "desc": "Find fun things to do together"
+      }
+    }
+  },
+  "academic": {
+    "title": "Academic Achievements",
+    "totalPapers": "{count} papers",
+    "filterYear": "Filter by year",
+    "allYears": "All years",
+    "sortBy": "Sort by",
+    "sortCitations": "Citations",
+    "sortYear": "Year",
+    "citations": "{count} citations",
+    "venue": "Published in {venue}",
+    "noPapers": "No papers match the current filter."
+  },
+  "blog": {
+    "title": "Blog",
+    "readMore": "Read more",
+    "postedOn": "Posted on {date}",
+    "tags": "Tags",
+    "noPosts": "No posts yet. Check back later.",
+    "minRead": "{min} min read"
+  },
+  "experience": {
+    "title": "Experience",
+    "education": "Education",
+    "work": "Work",
+    "projects": "Projects",
+    "present": "Present"
+  },
+  "activities": {
+    "title": "Couple's Activities",
+    "selectCity": "Select a city",
+    "searchCity": "Search cities...",
+    "allCategories": "All",
+    "categories": {
+      "outdoor": "Outdoor",
+      "crafts": "Crafts",
+      "performances": "Performances",
+      "food": "Food",
+      "travel": "Travel",
+      "entertainment": "Entertainment"
+    },
+    "bookmark": {
+      "wantToGo": "Want to go",
+      "beenThere": "Been there",
+      "remove": "Remove bookmark"
+    },
+    "price": {
+      "free": "Free",
+      "range": "{min} - {max} CNY",
+      "from": "From {min} CNY"
+    },
+    "source": "Source",
+    "noActivities": "No activities found. Try a different city or category.",
+    "loading": "Finding fun activities...",
+    "error": "Unable to load activities. Please try again later.",
+    "retry": "Retry"
+  },
+  "footer": {
+    "copyright": "© {year} Hao Wang. Built with Astro.",
+    "social": "Find me on"
+  }
+}

@@ -1,0 +1,42 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import SectionTitle from '../../components/shared/SectionTitle.astro';
+import PostList from '../../components/blog/PostList.astro';
+import PostCard from '../../components/blog/PostCard.astro';
+import { useTranslations } from '../../lib/i18n';
+import { getCollection } from 'astro:content';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'zh' } },
+    { params: { lang: 'en' } },
+  ];
+}
+
+const locale = Astro.currentLocale ?? 'zh';
+const t = useTranslations(locale);
+
+const allPosts = await getCollection('blog', ({ data }) => {
+  return data.lang === locale && !data.draft;
+});
+
+const posts = allPosts.sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
+---
+
+<PageLayout title={t('blog.title')}>
+  <div class="blog-module max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <SectionTitle title={t('blog.title')} />
+
+    {posts.length === 0 ? (
+      <p class="text-center text-gray-500 dark:text-gray-400 py-12">{t('blog.noPosts')}</p>
+    ) : (
+      <PostList>
+        {posts.map((post) => (
+          <PostCard post={post} locale={locale} />
+        ))}
+      </PostList>
+    )}
+  </div>
+</PageLayout>

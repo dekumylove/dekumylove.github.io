@@ -1,0 +1,18 @@
+---
+import { formatDate, readingTime } from '../../lib/utils';
+
+interface Props {
+  date: Date;
+  locale: string;
+  body?: string;
+}
+
+const { date, locale, body } = Astro.props;
+const readMin = body ? readingTime(body) : 1;
+---
+
+<div class="mt-2 flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500">
+  <time datetime={date.toISOString()}>{formatDate(date, locale)}</time>
+  <span aria-hidden="true">·</span>
+  <span>{readMin} min read</span>
+</div>

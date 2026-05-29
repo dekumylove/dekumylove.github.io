@@ -1,0 +1,53 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import SectionTitle from '../../components/shared/SectionTitle.astro';
+import PaperCard from '../../components/academic/PaperCard.astro';
+import AcademicFilter from '../../islands/AcademicFilter.tsx';
+import { useTranslations } from '../../lib/i18n';
+import { fetchPapers } from '../../lib/academic';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'zh' } },
+    { params: { lang: 'en' } },
+  ];
+}
+
+const locale = Astro.currentLocale ?? 'zh';
+const t = useTranslations(locale);
+const papers = await fetchPapers('2327911002');
+const years = [
+  ...new Set(papers.map((p) => p.year).filter(Boolean)),
+].sort((a, b) => (b as number) - (a as number));
+---
+
+<PageLayout title={t('academic.title')}>
+  <div class="academic-module max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <SectionTitle
+      title={t('academic.title')}
+      subtitle={t('academic.totalPapers', { count: String(papers.length) })}
+    />
+
+    <AcademicFilter
+      client:load
+      years={years}
+      translations={{
+        filterYear: t('academic.filterYear'),
+        allYears: t('academic.allYears'),
+        sortBy: t('academic.sortBy'),
+        sortCitations: t('academic.sortCitations'),
+        sortYear: t('academic.sortYear'),
+      }}
+    />
+
+    {papers.length === 0 ? (
+      <p class="text-center text-gray-500 dark:text-gray-400 py-12">{t('academic.noPapers')}</p>
+    ) : (
+      <div class="paper-list">
+        {papers.map((paper) => (
+          <PaperCard paper={paper} locale={locale} />
+        ))}
+      </div>
+    )}
+  </div>
+</PageLayout>

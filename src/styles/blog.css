@@ -1,0 +1,24 @@
+@layer components {
+  .blog-module {
+    font-family: var(--font-sans);
+  }
+
+  .blog-module article.prose {
+    max-width: 72ch;
+  }
+
+  .blog-module .tag-badge {
+    display: inline-block;
+    padding: 0.125rem 0.625rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    background: #f1f5f9;
+    color: #475569;
+  }
+
+  .dark .blog-module .tag-badge {
+    background: #334155;
+    color: #cbd5e1;
+  }
+}

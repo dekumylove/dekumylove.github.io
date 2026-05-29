@@ -1,0 +1,39 @@
+name: Fetch Activity Data
+
+on:
+  schedule:
+    - cron: '0 6 * * 0'   # Weekly: Sunday 6:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx tsx scripts/fetch-activities.ts
+        env:
+          EVENTBRITE_API_KEY: ${{ secrets.EVENTBRITE_API_KEY }}
+          SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
+          MEETUP_API_KEY: ${{ secrets.MEETUP_API_KEY }}
+      - name: Check for changes
+        id: git-check
+        run: |
+          if [[ -n "$(git status --porcelain src/data/)" ]]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+      - name: Commit and push
+        if: steps.git-check.outputs.changed == 'true'
+        run: |
+          git config user.name "Activity Bot"
+          git config user.email "bot@example.com"
+          git add src/data/activities.json
+          git commit -m "chore: update activity data [skip ci]"
+          git push

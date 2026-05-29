@@ -1,0 +1,52 @@
+@import 'tailwindcss';
+
+@plugin '@tailwindcss/typography';
+
+@layer base {
+  :root {
+    --font-sans: 'Inter', 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+    --font-serif: 'Crimson Pro', 'Noto Serif SC', Georgia, serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+    --color-nav-bg: 255 255 255;
+    --color-nav-text: 17 24 39;
+    --color-footer-bg: 249 250 251;
+    --color-footer-text: 107 114 128;
+  }
+
+  .dark {
+    --color-nav-bg: 17 24 39;
+    --color-nav-text: 243 244 246;
+    --color-footer-bg: 17 24 39;
+    --color-footer-text: 156 163 175;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-family: var(--font-sans);
+  }
+
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #111827;
+    background-color: #ffffff;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  .dark body {
+    color: #f3f4f6;
+    background-color: #030712;
+  }
+}
+
+@layer utilities {
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

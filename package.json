@@ -1,0 +1,26 @@
+{
+  "name": "activity-recommendation",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "fetch-activities": "tsx scripts/fetch-activities.ts"
+  },
+  "dependencies": {
+    "@astrojs/preact": "^4.0.8",
+    "@astrojs/check": "^0.9.4",
+    "astro": "^5.7.13",
+    "preact": "^10.26.6",
+    "typescript": "^5.8.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.6",
+    "@tailwindcss/typography": "^0.5.16",
+    "tailwindcss": "^4.1.6",
+    "tsx": "^4.19.4"
+  }
+}
