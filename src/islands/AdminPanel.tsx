@@ -355,7 +355,7 @@ export default function AdminPanel() {
         <div className="space-y-6">
           {!token && <p className="text-sm text-amber-600">Set GitHub token in Settings before publishing.</p>}
           <div className="flex gap-2">
-            <button onClick={() => { setBlogMode('create'); setEditingFile(''); setStatus(null); }} className={`px-3 py-1.5 rounded text-xs font-medium ${blogMode === 'create' ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900' : 'bg-gray-100 dark:bg-gray-800'}`}>New Post</button>
+            <button onClick={() => { setBlogMode('create'); setEditingFile(''); setPostList([]); setPostListLoaded(false); setBlogPost({ title: '', date: new Date().toISOString().split('T')[0], tags: '', lang: 'zh', slug: '', content: '' }); setStatus(null); }} className={`px-3 py-1.5 rounded text-xs font-medium ${blogMode === 'create' ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900' : 'bg-gray-100 dark:bg-gray-800'}`}>New Post</button>
             <button onClick={() => { setBlogMode('edit'); setStatus(null); }} className={`px-3 py-1.5 rounded text-xs font-medium ${blogMode === 'edit' ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900' : 'bg-gray-100 dark:bg-gray-800'}`}>Edit Existing</button>
           </div>
 
