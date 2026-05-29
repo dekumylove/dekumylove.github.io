@@ -40,6 +40,27 @@ export async function getFile(token: string, path: string): Promise<FileInfo> {
   };
 }
 
+interface DirItem {
+  name: string;
+  path: string;
+  sha: string;
+}
+
+export async function listDir(token: string, path: string): Promise<DirItem[]> {
+  const res = await fetch(`${API_BASE}/${path}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/vnd.github.v3+json',
+    },
+  });
+  if (!res.ok) throw new Error(`Failed to list ${path}: ${res.status}`);
+  const data = await res.json();
+  if (!Array.isArray(data)) return [];
+  return data
+    .filter((item: any) => item.type === 'file' && item.name.endsWith('.md'))
+    .map((item: any) => ({ name: item.name, path: item.path, sha: item.sha }));
+}
+
 export async function saveFile(
   token: string,
   path: string,

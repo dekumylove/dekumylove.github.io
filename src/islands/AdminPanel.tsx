@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'preact/hooks';
-import { getFile, saveFile } from '../lib/github-api';
+import { getFile, saveFile, listDir } from '../lib/github-api';
 import { sha256 } from '../lib/crypto';
 
 type Tab = 'profile' | 'blog' | 'experience' | 'settings';
@@ -66,6 +66,8 @@ export default function AdminPanel() {
   const [blogPost, setBlogPost] = useState({ title: '', date: new Date().toISOString().split('T')[0], tags: '', lang: 'zh' as 'zh' | 'en', slug: '', content: '' });
   const [blogMode, setBlogMode] = useState<'create' | 'edit'>('create');
   const [editingFile, setEditingFile] = useState('');
+  const [postList, setPostList] = useState<{ name: string; path: string }[]>([]);
+  const [postListLoaded, setPostListLoaded] = useState(false);
 
   const [newPassword, setNewPassword] = useState('');
   const [tokenInput, setTokenInput] = useState('');
@@ -160,6 +162,40 @@ export default function AdminPanel() {
   }
 
   // ---- Blog ----
+  async function loadPostList(listLang: string) {
+    setStatus({ type: 'loading', msg: 'Loading posts...' });
+    try {
+      const dir = listLang === 'zh' ? 'src/content/blog/zh' : 'src/content/blog/en';
+      const files = await listDir(token, dir);
+      setPostList(files); setPostListLoaded(true);
+      setStatus({ type: 'success', msg: `Found ${files.length} posts.` });
+    } catch (e: any) { setStatus({ type: 'error', msg: e.message }); }
+  }
+
+  async function loadPostForEdit(path: string) {
+    setStatus({ type: 'loading', msg: 'Loading post...' });
+    try {
+      const file = await getFile(token, path);
+      const content = file.content;
+      // Parse frontmatter
+      const fmMatch = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+      if (fmMatch) {
+        const fm = fmMatch[1];
+        const body = fmMatch[2];
+        const title = fm.match(/title:\s*"?(.+?)"?\n/)?.[1] || '';
+        const date = fm.match(/date:\s*(\S+)/)?.[1] || '';
+        const tagsMatch = fm.match(/tags:\s*\[(.+?)\]/);
+        const tags = tagsMatch ? tagsMatch[1].split(',').map(t => t.trim().replace(/"/g, '')).join(', ') : '';
+        const lang = fm.match(/lang:\s*"?(zh|en)"?/)?.[1] || 'zh';
+        const slugMatch = path.match(/\/([^/]+)\.md$/);
+        const slug = slugMatch ? slugMatch[1] : '';
+        setBlogPost({ title, date, tags, lang: lang as 'zh' | 'en', slug, content: body });
+        setEditingFile(path);
+      }
+      setStatus({ type: 'success', msg: 'Post loaded.' });
+    } catch (e: any) { setStatus({ type: 'error', msg: e.message }); }
+  }
+
   async function saveBlogPost() {
     if (!blogPost.slug || !blogPost.content) { setStatus({ type: 'error', msg: 'Slug and content required.' }); return; }
     setStatus({ type: 'loading', msg: 'Saving...' });
@@ -168,9 +204,9 @@ export default function AdminPanel() {
     const fm = ['---', `title: "${blogPost.title}"`, `date: ${blogPost.date}`, `tags: [${blogPost.tags.split(',').map(t => `"${t.trim()}"`).filter(t => t !== '""').join(', ')}]`, `lang: "${blogPost.lang}"`, `draft: false`, '---', ''].join('\n');
     try {
       let sha = '';
-      if (blogMode === 'edit' && editingFile) { try { sha = (await getFile(token, editingFile)).sha; } catch {} }
+      if (editingFile) { try { sha = (await getFile(token, editingFile)).sha; } catch {} }
       await saveFile(token, fp, fm + blogPost.content, sha, `${blogMode === 'edit' ? 'chore: update' : 'feat: add'} "${blogPost.title}"`);
-      setStatus({ type: 'success', msg: `Post ${blogMode === 'edit' ? 'updated' : 'published'}!` });
+      setStatus({ type: 'success', msg: `Post ${blogMode === 'edit' ? 'updated' : 'published'}! Rebuilds in 1-2 min.` });
       if (blogMode === 'create') setBlogPost({ title: '', date: new Date().toISOString().split('T')[0], tags: '', lang: 'zh', slug: '', content: '' });
     } catch (e: any) { setStatus({ type: 'error', msg: e.message }); }
   }
@@ -319,9 +355,46 @@ export default function AdminPanel() {
         <div className="space-y-6">
           {!token && <p className="text-sm text-amber-600">Set GitHub token in Settings before publishing.</p>}
           <div className="flex gap-2">
-            <button onClick={() => setBlogMode('create')} className={`px-3 py-1.5 rounded text-xs font-medium ${blogMode === 'create' ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900' : 'bg-gray-100 dark:bg-gray-800'}`}>New Post</button>
-            <button onClick={() => setBlogMode('edit')} className={`px-3 py-1.5 rounded text-xs font-medium ${blogMode === 'edit' ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900' : 'bg-gray-100 dark:bg-gray-800'}`}>Edit Existing</button>
+            <button onClick={() => { setBlogMode('create'); setEditingFile(''); setStatus(null); }} className={`px-3 py-1.5 rounded text-xs font-medium ${blogMode === 'create' ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900' : 'bg-gray-100 dark:bg-gray-800'}`}>New Post</button>
+            <button onClick={() => { setBlogMode('edit'); setStatus(null); }} className={`px-3 py-1.5 rounded text-xs font-medium ${blogMode === 'edit' ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900' : 'bg-gray-100 dark:bg-gray-800'}`}>Edit Existing</button>
           </div>
+
+          {/* Edit mode: load existing posts */}
+          {blogMode === 'edit' && (
+            <div className="p-4 rounded-xl bg-gray-50 dark:bg-gray-900 space-y-3">
+              <div className="flex items-end gap-3">
+                <div>
+                  <label className={labelClass}>Language</label>
+                  <select id="edit-lang" className={fieldClass} defaultValue={blogPost.lang}>
+                    <option value="zh">中文</option>
+                    <option value="en">English</option>
+                  </select>
+                </div>
+                <button onClick={() => { loadPostList((document.getElementById('edit-lang') as HTMLSelectElement)?.value || 'zh'); }}
+                  className="px-4 py-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-lg text-sm font-medium hover:opacity-80">
+                  Load Posts
+                </button>
+              </div>
+              {postListLoaded && postList.length > 0 && (
+                <div>
+                  <label className={labelClass}>Select a post to edit</label>
+                  <div className="space-y-1 max-h-48 overflow-y-auto">
+                    {postList.map(p => (
+                      <button key={p.path} onClick={() => loadPostForEdit(p.path)}
+                        className="w-full text-left px-3 py-2 rounded-lg text-sm border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-900 dark:text-white">
+                        {p.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {postListLoaded && postList.length === 0 && (
+                <p className="text-sm text-gray-400">No posts found for this language.</p>
+              )}
+              {editingFile && <p className="text-xs text-green-600">Editing: {editingFile}</p>}
+            </div>
+          )}
+
           <div className="grid sm:grid-cols-2 gap-4">
             <div><label className={labelClass}>Title</label><input value={blogPost.title} onChange={e => setBlogPost(p => ({ ...p, title: (e.target as HTMLInputElement).value }))} className={fieldClass} /></div>
             <div><label className={labelClass}>Slug</label><input value={blogPost.slug} onChange={e => setBlogPost(p => ({ ...p, slug: (e.target as HTMLInputElement).value }))} placeholder="my-post" className={fieldClass} /></div>
@@ -330,7 +403,9 @@ export default function AdminPanel() {
             <div className="sm:col-span-2"><label className={labelClass}>Tags (comma-separated)</label><input value={blogPost.tags} onChange={e => setBlogPost(p => ({ ...p, tags: (e.target as HTMLInputElement).value }))} className={fieldClass} /></div>
             <div className="sm:col-span-2"><label className={labelClass}>Content (Markdown)</label><textarea value={blogPost.content} onChange={e => setBlogPost(p => ({ ...p, content: (e.target as HTMLTextAreaElement).value }))} rows={16} className={`${fieldClass} font-mono`} /></div>
           </div>
-          <button onClick={saveBlogPost} disabled={!token} className="px-6 py-2.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-lg font-medium hover:opacity-80 disabled:opacity-40">Publish Post</button>
+          <button onClick={saveBlogPost} disabled={!token} className="px-6 py-2.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-lg font-medium hover:opacity-80 disabled:opacity-40">
+            {blogMode === 'edit' ? 'Update Post' : 'Publish Post'}
+          </button>
         </div>
       )}
 
