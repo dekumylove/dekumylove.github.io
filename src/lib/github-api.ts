@@ -2,6 +2,22 @@ const REPO_OWNER = 'dekumylove';
 const REPO_NAME = 'dekumylove.github.io';
 const API_BASE = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents`;
 
+function toBase64(str: string): string {
+  const bytes = new TextEncoder().encode(str);
+  let binary = '';
+  bytes.forEach(b => binary += String.fromCharCode(b));
+  return btoa(binary);
+}
+
+function fromBase64(base64: string): string {
+  const binary = atob(base64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  return new TextDecoder().decode(bytes);
+}
+
 interface FileInfo {
   content: string;
   sha: string;
@@ -19,7 +35,7 @@ export async function getFile(token: string, path: string): Promise<FileInfo> {
   }
   const data = await res.json();
   return {
-    content: atob(data.content),
+    content: fromBase64(data.content),
     sha: data.sha,
   };
 }
@@ -40,7 +56,7 @@ export async function saveFile(
     },
     body: JSON.stringify({
       message,
-      content: btoa(content),
+      content: toBase64(content),
       ...(sha ? { sha } : {}),
       branch: 'main',
     }),
