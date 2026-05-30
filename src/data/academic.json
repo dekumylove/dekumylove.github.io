@@ -1,0 +1,123 @@
+[
+  {
+    "paperId": "38f6a6f772b7f2ababc7a224da18cc2e46d95478",
+    "title": "PFCA: Efficient Path Filtering with Causal Analysis for Healthcare Risk Prediction",
+    "authors": [
+      {
+        "authorId": "2327911002",
+        "name": "Hao Wang"
+      },
+      {
+        "authorId": "2312880481",
+        "name": "Jiyun Shi"
+      },
+      {
+        "authorId": "2355571121",
+        "name": "Yuhao Chen"
+      },
+      {
+        "authorId": "2296594662",
+        "name": "Haochen Xu"
+      },
+      {
+        "authorId": "2326998504",
+        "name": "Chi Zhang"
+      },
+      {
+        "authorId": "39365539",
+        "name": "Zhaojing Luo"
+      },
+      {
+        "authorId": "2326983846",
+        "name": "Meihui Zhang"
+      }
+    ],
+    "year": 2025,
+    "venue": "IEEE International Conference on Data Engineering",
+    "citationCount": 2,
+    "externalIds": {
+      "DBLP": "conf/icde/WangSCXZLZ25",
+      "DOI": "10.1109/ICDE65448.2025.00176",
+      "CorpusId": 280695308
+    },
+    "url": "https://doi.org/10.1109/ICDE65448.2025.00176"
+  },
+  {
+    "paperId": "65fa3a48df983a807322252905ca15eae0e76559",
+    "title": "Cost-Effective Framework with Optimized Task Decomposition and Batch Prompting for Medical Dialogue Summary",
+    "authors": [
+      {
+        "authorId": "2326998504",
+        "name": "Chi Zhang"
+      },
+      {
+        "authorId": "2326986141",
+        "name": "Tao Chen"
+      },
+      {
+        "authorId": "2327160641",
+        "name": "Jiehao Chen"
+      },
+      {
+        "authorId": "2327911002",
+        "name": "Hao Wang"
+      },
+      {
+        "authorId": "2312880481",
+        "name": "Jiyun Shi"
+      },
+      {
+        "authorId": "39365539",
+        "name": "Zhaojing Luo"
+      },
+      {
+        "authorId": "2326983846",
+        "name": "Meihui Zhang"
+      }
+    ],
+    "year": 2024,
+    "venue": "International Conference on Information and Knowledge Management",
+    "citationCount": 3,
+    "externalIds": {
+      "DBLP": "conf/cikm/ZhangCCWSL024",
+      "DOI": "10.1145/3627673.3679671",
+      "CorpusId": 273499472
+    },
+    "url": "https://doi.org/10.1145/3627673.3679671"
+  },
+  {
+    "paperId": "a0d677769da854e3b932028724279914b3667a2a",
+    "title": "KEIM: Knowledge Graph Empowered Interpretable Model for Diagnosis Prediction",
+    "authors": [
+      {
+        "authorId": "39365539",
+        "name": "Zhaojing Luo"
+      },
+      {
+        "authorId": "2326998504",
+        "name": "Chi Zhang"
+      },
+      {
+        "authorId": "2327911002",
+        "name": "Hao Wang"
+      },
+      {
+        "authorId": "2312880481",
+        "name": "Jiyun Shi"
+      },
+      {
+        "authorId": "2326983846",
+        "name": "Meihui Zhang"
+      }
+    ],
+    "year": 2024,
+    "venue": "International Conference on Database Systems for Advanced Applications",
+    "citationCount": 0,
+    "externalIds": {
+      "DBLP": "conf/dasfaa/LuoZWSZ24",
+      "DOI": "10.1007/978-981-97-5562-2_20",
+      "CorpusId": 273962050
+    },
+    "url": "https://doi.org/10.1007/978-981-97-5562-2_20"
+  }
+]

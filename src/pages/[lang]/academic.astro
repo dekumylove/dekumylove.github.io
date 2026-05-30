@@ -5,6 +5,7 @@ import PaperCard from '../../components/academic/PaperCard.astro';
 import AcademicFilter from '../../islands/AcademicFilter.tsx';
 import { useTranslations } from '../../lib/i18n';
 import { fetchPapers } from '../../lib/academic';
+import type { Paper } from '../../lib/academic';
 
 export function getStaticPaths() {
   return [
@@ -15,7 +16,21 @@ export function getStaticPaths() {
 
 const locale = Astro.currentLocale ?? 'zh';
 const t = useTranslations(locale);
-const papers = await fetchPapers('2327911002');
+
+// Read from cached JSON first, fall back to live API
+let papers: Paper[] = [];
+try {
+  const cached = await import('../../data/academic.json');
+  papers = cached.default as Paper[];
+} catch {
+  // JSON file doesn't exist or is empty
+}
+
+if (papers.length === 0) {
+  // Fallback to live API (e.g. local dev or first build)
+  papers = await fetchPapers('2327911002');
+}
+
 const years = [
   ...new Set(papers.map((p) => p.year).filter(Boolean)),
 ].sort((a, b) => (b as number) - (a as number));
