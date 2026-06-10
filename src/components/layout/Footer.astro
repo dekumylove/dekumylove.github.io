@@ -13,71 +13,13 @@ const year = new Date().getFullYear();
     <p class="text-sm text-gray-500 dark:text-gray-500">
       &copy; {year} {locale === 'en' ? profile.name_en : profile.name_zh}
     </p>
-    <p id="visitor-counter" class="text-xs text-gray-400 dark:text-gray-600 mt-2" aria-live="polite"></p>
+    <p class="mt-2 text-sm text-gray-400 dark:text-gray-500">
+      <img
+        src="https://visitor-badge.laobi.icu/badge?page_id=dekumylove.github"
+        alt="visitor count"
+        class="inline-block h-5"
+        loading="lazy"
+      />
+    </p>
   </div>
 </footer>
-
-<script>
-  (function () {
-    const el = document.getElementById('visitor-counter');
-    if (!el) return;
-
-    const STORAGE_KEY = 'visitor_counted';
-    const NAMESPACE = 'dekumylove';
-    const KEY = 'homepage';
-    const API_BASE = 'https://api.countapi.xyz';
-
-    async function getCount() {
-      const res = await fetch(`${API_BASE}/get/${NAMESPACE}/${KEY}`);
-      if (!res.ok) return null;
-      const data = await res.json();
-      return data.value ?? null;
-    }
-
-    async function hitAndGetCount() {
-      const res = await fetch(`${API_BASE}/hit/${NAMESPACE}/${KEY}`);
-      if (!res.ok) return null;
-      const data = await res.json();
-      return data.value ?? null;
-    }
-
-    function formatCount(n) {
-      if (n >= 10000) return (n / 10000).toFixed(1) + ' 万';
-      if (n >= 1000) return n.toLocaleString('en-US');
-      return String(n);
-    }
-
-    function displayCount(count) {
-      if (count === null) {
-        el.style.display = 'none';
-        return;
-      }
-      const locale = document.documentElement.lang.startsWith('en') ? 'en' : 'zh';
-      if (locale === 'zh') {
-        el.textContent = `👀 已有 ${formatCount(count)} 位访客`;
-      } else {
-        el.textContent = `👀 ${formatCount(count)} visitors`;
-      }
-    }
-
-    async function init() {
-      try {
-        const counted = localStorage.getItem(STORAGE_KEY);
-        let count;
-        if (counted) {
-          count = await getCount();
-        } else {
-          count = await hitAndGetCount();
-          if (count !== null) {
-            localStorage.setItem(STORAGE_KEY, '1');
-          }
-        }
-        displayCount(count);
-      } catch {
-        el.style.display = 'none';
-      }
-    }
-
-    init();
-  })();
-</script>
